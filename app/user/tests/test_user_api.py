@@ -18,7 +18,7 @@ def create_user(**params):
     return get_user_model().objects.create_user(**params)
 
 class PublicUserApiTests(TestCase):
-    """Test the public fatures of the user API."""
+    """Test the public features of the user API."""
 
     def setUp(self):
         self.client = APIClient()
@@ -85,7 +85,15 @@ class PublicUserApiTests(TestCase):
         """Test returns error if credentials invalid."""
         create_user(email='test@example.com', password='user_password')
 
-        payload = {'email': 'test@example.com', 'password': 'badpadd'}
+        payload = {'email': 'test@example.com', 'password': 'badpass'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_token_email_not_found(self):
+        """Test error returned if user not found for given email."""
+        payload = {'email': 'test@example.com', 'password': 'pass123'}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
@@ -117,7 +125,7 @@ class PrivateUserApiTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    def test_retreieve_profile_success(self):
+    def test_retrieve_profile_success(self):
         """Test retrieving profile for logged in user."""
         res = self.client.get(ME_URL)
 
