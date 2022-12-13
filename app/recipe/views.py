@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import (
     Recipe,
     Tag,
-    Ingredient
+    Ingredient,
 )
 
 from recipe import serializers
@@ -31,7 +31,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """Return the serializer class for request."""
-        if self.action == list:
+        if self.action == 'list':
             return serializers.RecipeSerializer
 
         return self.serializer_class
