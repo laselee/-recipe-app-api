@@ -1,13 +1,13 @@
 FROM nginxinc/nginx-unprivileged:1-alpine
-LABEL maintainer="londonappdeveloper.com"
+LABEL maintainer="laselee.com"
 
 COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
 COPY ./uwsgi_params /etc/nginx/uwsgi_params
 COPY ./run.sh /run.sh
 
-ENV LITSEN_PORT=8000
+ENV LISTEN_PORT=8000
 ENV APP_HOST=app
-ENV APP_HOST=9000
+ENV APP_PORT=9000
 
 USER root
 
